@@ -8,7 +8,6 @@ class ChoiceList extends Component {
     let choiceTitle = currentChoices.length>0 ? "You have chosen these fine characters" : "Your choices will be displayed here";
     const currentChoicesArray = [];
     for (let i=0; i<currentChoices.length; i++) {
-      console.log("this coice",currentChoices[i][1]);
       currentChoicesArray.push(
         <li key={i} className="choice">
           <div className="title">{currentChoices[i][0]}</div>

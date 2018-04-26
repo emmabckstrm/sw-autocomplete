@@ -8,13 +8,21 @@ class App extends Component {
     super(props);
     this.state = {
       currentChoices: [],
+      currentFocusIndex: -1,
       items: {},
       searchResult: null,
       searchValue: "",
     }
   }
-
+  handleCurrentFocusIndex = (value) => {
+    console.log("handel focus index",value, this.state.currentFocusIndex);
+    const newIndex = this.state.currentFocusIndex + value;
+    this.setState((prevState) => ({
+      currentFocusIndex: prevState.currentFocusIndex + value
+    }));
+  }
   handleChangeSearchbar = (event) => {
+    console.log("hello");
     this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
   // Handles the clicked item and adds to state
@@ -28,8 +36,8 @@ class App extends Component {
     newChoices.push(newItem);
     this.setNewChoices(newChoices);
   }
+  // Sets the new choices both to state and localStorage
   setNewChoices = (newChoices) => {
-    console.log("will set these ", newChoices);
     localStorage.setItem("test2", JSON.stringify(newChoices));
     this.setState({currentChoices: newChoices});
   }
@@ -48,7 +56,6 @@ class App extends Component {
   componentDidMount = () => {
     const cachedResults = localStorage.getItem("test2");
     if (cachedResults) {
-      console.log("get these chaced results" , JSON.parse(cachedResults));
       this.setState({currentChoices: JSON.parse(cachedResults)});
     }
   }
@@ -66,6 +73,8 @@ class App extends Component {
               handleChange={this.handleChangeSearchbar}
               results={this.state.searchResult}
               handleResultClick={this.handleSearchResultClick}
+              currentFocusIndex={this.state.currentFocusIndex}
+              handleCurrentFocusIndex={this.handleCurrentFocusIndex}
             />
           </div>
         </header>
