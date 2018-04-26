@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import './SearchForm.css';
 
 class SearchForm extends Component {
-  constructor(props) {
-    super(props);
-  }
 
   render() {
     const resultArray = [];

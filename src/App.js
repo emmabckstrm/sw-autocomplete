@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import SearchForm from './SearchForm';
+import ChoiceList from './ChoiceList';
 
 class App extends Component {
   constructor(props) {
@@ -11,20 +12,29 @@ class App extends Component {
       searchResult: null,
       searchValue: "",
     }
-    this.handleChangeSearchbar = this.handleChangeSearchbar.bind(this);
-    this.swapiRequest = this.swapiRequest.bind(this);
   }
 
-  handleChangeSearchbar(event) {
-    this.setState({searchValue: event.target.value}, () => this.swapiRequest());
-    //this.setState({searchValue: event.target.value}, function() { console.log( this.swapiRequest()) });
+  handleChangeSearchbar = (event) => {
+    this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
-
-  handleSearchResultClick(event) {
-    console.log("you clicked here!",event.target);
+  // Handles the clicked item and adds to state
+  handleSearchResultClick = (event) => {
+    const chosenItem = event.target.innerHTML;
+    let newChoices = this.state.currentChoices.slice();
+    let date = new Date();
+    let localeString = date.toLocaleString();
+    localeString = localeString.split(" ");
+    let newItem = [chosenItem,localeString[0],localeString[1]];
+    newChoices.push(newItem);
+    this.setNewChoices(newChoices);
   }
-
-  swapiRequest() {
+  setNewChoices = (newChoices) => {
+    console.log("will set these ", newChoices);
+    localStorage.setItem("test2", JSON.stringify(newChoices));
+    this.setState({currentChoices: newChoices});
+  }
+  // Makes request to star wars api
+  swapiRequest = () => {
     let apiQuery = ("https://swapi.co/api/people/?search=" + this.state.searchValue);
     fetch(apiQuery)
     .then((response) => {
@@ -35,13 +45,16 @@ class App extends Component {
     });
   }
 
+  componentDidMount = () => {
+    const cachedResults = localStorage.getItem("test2");
+    if (cachedResults) {
+      console.log("get these chaced results" , JSON.parse(cachedResults));
+      this.setState({currentChoices: JSON.parse(cachedResults)});
+    }
+  }
+
 
   render() {
-    const currentChoices = this.state.currentChoices;
-    const currentChoicesArray = [];
-    for (let i=0; i<currentChoices; i++) {
-      currentChoicesArray.push(<div key={i}>{currentChoices[i]}</div>);
-    }
 
     return (
       <div className="app">
@@ -57,10 +70,7 @@ class App extends Component {
           </div>
         </header>
         <section className="container">
-          <p className="intro">
-            Your choices will be displayed here.
-          </p>
-          <p>{this.state.currentChoices}</p>
+          <ChoiceList currentChoices={this.state.currentChoices}/>
         </section>
       </div>
     );

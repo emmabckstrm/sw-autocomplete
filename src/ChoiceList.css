@@ -1,0 +1,26 @@
+
+.choice-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+}
+.choice-list li {
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.choice-list .title {
+}
+.choice-list .timestamp {
+  align-self: flex-end;
+  display: flex;
+  flex-direction: column;
+  font-size: 0.8em;
+  font-size: 0.8em;
+    background: #ddd;
+    padding: 7px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

@@ -1,5 +1,4 @@
 .app {
-  text-align: center;
 }
 
 
@@ -19,15 +18,19 @@
   margin-right: auto;
 }
 
-.container {}
+.container {
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
 
-.title {
+.app-title {
   align-self: center;
   margin-left: auto;
   margin-right: auto;
   font-size: 1.5em;
 }
 
-.intro {
+.app-intro {
   font-size: large;
 }
