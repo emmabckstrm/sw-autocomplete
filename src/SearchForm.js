@@ -29,8 +29,6 @@ class SearchForm extends Component {
         );
       }
     }
-
-
     return (
       <div className="search-form">
         <SearchBar

@@ -9,13 +9,12 @@ class App extends Component {
     this.state = {
       currentChoices: [],
       currentFocusIndex: -1,
-      items: {},
       searchResult: null,
-      searchResultLength: 10,
       searchValue: "",
     }
     this.storageKey = "test4";
   }
+  // Makes sure the currentfocus index is within a certain range
   handleCurrentFocusIndex = (value) => {
     if (this.state.searchResult != null) {
       if(value === 1) {
@@ -28,18 +27,16 @@ class App extends Component {
         }
       }
     }
-
   }
+  // Increments the currentFocusIndex with specifid value
   updateState = (value) => {
     this.setState((prevState) => ({
       currentFocusIndex: prevState.currentFocusIndex + value
     }));
   }
+  // Resets focus index to indicate the search bar
   resetFocusIndex = () => {
     this.setState({currentFocusIndex: -1});
-  }
-  handleChangeSearchbar = (event) => {
-    this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
   // Handles the clicked item and adds to state
   handleSearchResultClick = (event) => {
@@ -56,6 +53,10 @@ class App extends Component {
   setNewChoices = (newChoices) => {
     localStorage.setItem(this.storageKey, JSON.stringify(newChoices));
     this.setState({currentChoices: newChoices});
+  }
+  // Handles changes to search bar, makes api request
+  handleChangeSearchbar = (event) => {
+    this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
   // Makes request to star wars api
   swapiRequest = () => {

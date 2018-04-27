@@ -1,9 +1,14 @@
-
+/*
+    General ==========================
+*/
 .search-form {
   width: 70%;
   font: 1.1em courier;
   color: #6ed7e5;
 }
+/*
+    Search bar ==========================
+*/
 .search-form input {
   width: 100%;
   padding: 10px;
@@ -15,7 +20,9 @@
   border-radius: 4px;
   outline-color: #73bac4;
 }
-
+/*
+    Search results ==========================
+*/
 .search-result {
  width: 100%;
  position: relative;
@@ -45,7 +52,9 @@
   background: #666;
   outline: #73bac4;
 }
-
+/*
+    MEdia queries ==========================
+*/
 @media screen and (max-width: 768px) {
   .search-form {
     width: 100%;
