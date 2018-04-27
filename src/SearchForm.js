@@ -76,21 +76,18 @@ class SearchBar extends Component {
 
 class SearchResultItem extends Component {
 
-  handleFocus = (element) => {
-    console.log("heelo");
-    if(element && this.props.currentFocusIndex === this.props.index) {
-      element.focus();
-    }
-  }
-
   render() {
+    this.handleFocus = (element) => {
+      if(element && this.props.currentFocusIndex === this.props.index) {
+        element.focus();
+      }
+    }
     return(
       <button
         onClick={this.props.handleResultClick}
         ref={this.handleFocus}
         onKeyDown={this.props.onKeyPress}
       >
-        {this.props.currentFocusIndex}
         {this.props.title}
       </button>
     )

@@ -11,18 +11,20 @@ class App extends Component {
       currentFocusIndex: -1,
       items: {},
       searchResult: null,
+      searchResultLength: 10,
       searchValue: "",
     }
   }
   handleCurrentFocusIndex = (value) => {
-    console.log("handel focus index",value, this.state.currentFocusIndex);
-    const newIndex = this.state.currentFocusIndex + value;
-    this.setState((prevState) => ({
-      currentFocusIndex: prevState.currentFocusIndex + value
-    }));
+    console.log("handel focus index",value, this.state.currentFocusIndex, "length", this.state.searchResultLength);
+    if (this.state.currentFocusIndex < this.state.searchResultLength-1 || (this.state.currentFocusIndex === this.state.searchResultLength-1 && value===-1)) {
+      this.setState((prevState) => ({
+        currentFocusIndex: prevState.currentFocusIndex + value
+      }));
+    }
   }
   handleChangeSearchbar = (event) => {
-    console.log("hello");
+    console.log("hello, value", event.target.value);
     this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
   // Handles the clicked item and adds to state
@@ -43,14 +45,18 @@ class App extends Component {
   }
   // Makes request to star wars api
   swapiRequest = () => {
-    let apiQuery = ("https://swapi.co/api/people/?search=" + this.state.searchValue);
-    fetch(apiQuery)
-    .then((response) => {
-      return response.json();
-    })
-    .then((responseJson) => {
-      this.setState({searchResult: responseJson.results});
-    });
+    if (this.state.searchValue) {
+      let apiQuery = ("https://swapi.co/api/people/?search=" + this.state.searchValue);
+      fetch(apiQuery)
+      .then((response) => {
+        return response.json();
+      })
+      .then((responseJson) => {
+        this.setState({searchResult: responseJson.results});
+      });
+    } else {
+      this.setState({searchResult: null})
+    }
   }
 
   componentDidMount = () => {
