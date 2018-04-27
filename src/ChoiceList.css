@@ -10,6 +10,11 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-top: 1px solid #ddd;
+}
+.choice-list li:last-child {
+  border-bottom: 1px solid #ddd;
+  margin-bottom: 10px;
 }
 .choice-list .title {
 }

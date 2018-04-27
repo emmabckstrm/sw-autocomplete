@@ -14,17 +14,31 @@ class App extends Component {
       searchResultLength: 10,
       searchValue: "",
     }
+    this.storageKey = "test4";
   }
   handleCurrentFocusIndex = (value) => {
-    console.log("handel focus index",value, this.state.currentFocusIndex, "length", this.state.searchResultLength);
-    if (this.state.currentFocusIndex < this.state.searchResultLength-1 || (this.state.currentFocusIndex === this.state.searchResultLength-1 && value===-1)) {
-      this.setState((prevState) => ({
-        currentFocusIndex: prevState.currentFocusIndex + value
-      }));
+    if (this.state.searchResult != null) {
+      if(value === 1) {
+        if (this.state.currentFocusIndex < this.state.searchResult.length-1) {
+          this.updateState(value);
+        }
+      } else if (value === -1) {
+        if(this.state.currentFocusIndex > -1) {
+          this.updateState(value);
+        }
+      }
     }
+
+  }
+  updateState = (value) => {
+    this.setState((prevState) => ({
+      currentFocusIndex: prevState.currentFocusIndex + value
+    }));
+  }
+  resetFocusIndex = () => {
+    this.setState({currentFocusIndex: -1});
   }
   handleChangeSearchbar = (event) => {
-    console.log("hello, value", event.target.value);
     this.setState({searchValue: event.target.value}, () => {this.swapiRequest() });
   }
   // Handles the clicked item and adds to state
@@ -40,7 +54,7 @@ class App extends Component {
   }
   // Sets the new choices both to state and localStorage
   setNewChoices = (newChoices) => {
-    localStorage.setItem("test2", JSON.stringify(newChoices));
+    localStorage.setItem(this.storageKey, JSON.stringify(newChoices));
     this.setState({currentChoices: newChoices});
   }
   // Makes request to star wars api
@@ -60,7 +74,7 @@ class App extends Component {
   }
 
   componentDidMount = () => {
-    const cachedResults = localStorage.getItem("test2");
+    const cachedResults = localStorage.getItem(this.storageKey);
     if (cachedResults) {
       this.setState({currentChoices: JSON.parse(cachedResults)});
     }
@@ -72,8 +86,8 @@ class App extends Component {
     return (
       <div className="app">
         <header className="header">
-          <div className="header-container">
-            <h1 className="title">Search</h1>
+          <div className="container header-container">
+            <h1 className="app-title">Star Wars Character Search</h1>
             <SearchForm
               searchValue={this.state.searchValue}
               handleChange={this.handleChangeSearchbar}
@@ -81,10 +95,11 @@ class App extends Component {
               handleResultClick={this.handleSearchResultClick}
               currentFocusIndex={this.state.currentFocusIndex}
               handleCurrentFocusIndex={this.handleCurrentFocusIndex}
+              resetFocusIndex={this.resetFocusIndex}
             />
           </div>
         </header>
-        <section className="container">
+        <section className="container choices-container">
           <ChoiceList currentChoices={this.state.currentChoices}/>
         </section>
       </div>

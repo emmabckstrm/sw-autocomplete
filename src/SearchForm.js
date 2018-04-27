@@ -2,15 +2,12 @@ import React, { Component } from 'react';
 import './SearchForm.css';
 
 class SearchForm extends Component {
-
+  // Handles the event of a keypress
   onKeyPress = (event) => {
-    console.log("this key was pressed",event.key);
     if (event.key === "ArrowDown") {
       this.props.handleCurrentFocusIndex(1);
     } else if (event.key === "ArrowUp") {
       this.props.handleCurrentFocusIndex(-1);
-    } else if (event.key === "Enter") {
-      this.props.handleResultClick(event);
     }
   }
 
@@ -28,7 +25,7 @@ class SearchForm extends Component {
             title={result[i].name}
             currentFocusIndex={this.props.currentFocusIndex}
             onKeyPress={this.onKeyPress}
-            onClick={this.props.handleResultClick}/>
+            handleResultClick={this.props.handleResultClick}/>
         );
       }
     }
@@ -42,6 +39,7 @@ class SearchForm extends Component {
           currentFocusIndex={this.props.currentFocusIndex}
           handleChange={this.props.handleChange}
           onKeyPress={this.onKeyPress}
+          resetFocusIndex={this.props.resetFocusIndex}
         />
         <div className="search-result">
           <div className="search-result-list">
@@ -54,21 +52,19 @@ class SearchForm extends Component {
 }
 
 class SearchBar extends Component {
-  componentDidMount = () => {
-    this.searchBar.focus();
-  }
-  handleFocus = (element) => {
-    if(element && this.props.currentFocusIndex === this.props.index) {
-      element.focus();
-    }
-  }
   render() {
+    this.handleFocus = (element) => {
+      if(element && this.props.currentFocusIndex === this.props.index) {
+        element.focus();
+      }
+    }
     return(
-      <input type="text" placeholder="Search ..."
+      <input type="text" placeholder="A character in a galaxy far, far away ..."
         value={this.props.searchValue}
         onChange={this.props.handleChange}
         onKeyDown={this.props.onKeyPress}
-        ref={input => {this.searchBar=input}}
+        onFocus={this.props.resetFocusIndex}
+        ref={this.handleFocus}
       />
     )
   }
@@ -84,6 +80,7 @@ class SearchResultItem extends Component {
     }
     return(
       <button
+        className="item"
         onClick={this.props.handleResultClick}
         ref={this.handleFocus}
         onKeyDown={this.props.onKeyPress}
